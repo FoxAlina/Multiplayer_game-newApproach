@@ -58,7 +58,6 @@ public class TouchManager : MonoBehaviour
         return startPosition;
     }
 
-
     private void HandleFingerDown(Finger touchedFinger)
     {
         if (movementFinger == null && touchedFinger.currentTouch.screenPosition.x <= Screen.width / 2f)
@@ -75,12 +74,13 @@ public class TouchManager : MonoBehaviour
         }
 
     }
+
     private void HandleFingerMove(Finger movedFinger)
     {
         if (movedFinger == movementFinger)
         {
             Vector2 touch_pos = movedFinger.currentTouch.screenPosition;
-            target_vector = touch_pos - prev_pos;
+            //target_vector = touch_pos - prev_pos;
             prev_pos = touch_pos;
 
             Vector2 knobPosition;

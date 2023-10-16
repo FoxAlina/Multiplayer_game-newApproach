@@ -1,7 +1,6 @@
-using Unity.Netcode;
 using UnityEngine;
 
-public class EndGameManager : NetworkBehaviour
+public class EndGameManager : MonoBehaviour
 {
     [SerializeField] ScoreAndHealthManager scoreAndHealthManager;
 
@@ -13,7 +12,7 @@ public class EndGameManager : NetworkBehaviour
     [SerializeField] private GameObject gameOverText;
     [SerializeField] private GameObject winText;
 
-    public override void OnNetworkSpawn()
+    void Awake()
     {
         HideAll();
 
@@ -26,11 +25,11 @@ public class EndGameManager : NetworkBehaviour
         {
             Player[] players = FindObjectsOfType<Player>();
             clientsNumber = players.Length;
-            if (clientsNumber == 1)
-            {
-                ShowWin();
-                Player.IsRunGame = false;
-            }
+            //if (clientsNumber == 1)
+            //{
+            //    ShowWin();
+            //    Player.IsRunGame = false;
+            //}
         }
     }
 
@@ -47,7 +46,7 @@ public class EndGameManager : NetworkBehaviour
         gameOverPanel.SetActive(true);
         gameOverText.SetActive(true);
     }
-    
+
     void HideAll()
     {
         gameOverPanel.SetActive(false);
@@ -66,13 +65,13 @@ public class EndGameManager : NetworkBehaviour
         gameover = true;
     }
 
-    [ServerRpc(RequireOwnership = false)]
+    //[ServerRpc(RequireOwnership = false)]
     void SetFalsePlayerServerRpc(int playerId)
     {
         SetFalsePlayerClientRpc(playerId);
     }
 
-    [ClientRpc]
+    //[ClientRpc]
     void SetFalsePlayerClientRpc(int playerId)
     {
         Player[] players = FindObjectsOfType<Player>();
@@ -89,23 +88,23 @@ public class EndGameManager : NetworkBehaviour
     #region Bact to main menu
     public void BactToMainMenu()
     {
-        Disconnect();
-        Cleanup();
+        //Disconnect();
+        //Cleanup();
 
-        LoadScene.StartGame("MainScene");
+        LoadScene.StartScene("MainScene");
     }
 
-    void Disconnect()
-    {
-        NetworkManager.Singleton.Shutdown();
-    }
+    //void Disconnect()
+    //{
+    //    NetworkManager.Singleton.Shutdown();
+    //}
 
-    void Cleanup()
-    {
-        if (NetworkManager.Singleton != null)
-        {
-            Destroy(NetworkManager.Singleton.gameObject);
-        }
-    }
+    //void Cleanup()
+    //{
+    //    if (NetworkManager.Singleton != null)
+    //    {
+    //        Destroy(NetworkManager.Singleton.gameObject);
+    //    }
+    //}
     #endregion
 }

@@ -1,15 +1,13 @@
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
 
-public class BeforeGameManager : NetworkBehaviour
+public class BeforeGameManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI clientsNumberText;
     [SerializeField] TextMeshProUGUI joinCodeText;
 
     [SerializeField] GameObject beforeGameMenu;
 
-    private NetworkVariable<int> _netClientsNumber = new(writePerm:NetworkVariableWritePermission.Owner);
 
     private void Start()
     {
@@ -22,18 +20,8 @@ public class BeforeGameManager : NetworkBehaviour
 
     void Update()
     {
-        if (IsServer)
-        {
-            _netClientsNumber.Value = NetworkManager.Singleton.ConnectedClientsList.Count;
-            ShowClientsNumberClientRpc();
-        }
+        
 
-    }
-
-    [ClientRpc]
-    void ShowClientsNumberClientRpc()
-    {
-        clientsNumberText.text = _netClientsNumber.Value.ToString();
     }
 
     public void StartGame()
@@ -41,10 +29,10 @@ public class BeforeGameManager : NetworkBehaviour
         switch (GameCodeHolder.playerType)
         {
             case PlayerType.HOST:
-                NetworkManager.Singleton.StartHost();
+                
                 break;
             case PlayerType.CLIENT:
-                NetworkManager.Singleton.StartClient();
+                
                 break;
         }
     }

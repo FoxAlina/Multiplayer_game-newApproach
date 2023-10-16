@@ -41,7 +41,6 @@ public class InputControl : Singleton<InputControl>
     {
         playerControls.Disable();
 
-
         ETouch.Touch.onFingerDown -= TouchOnFingerDown;
         ETouch.Touch.onFingerUp -= TouchOnFingerUp;
         ETouch.Touch.onFingerMove -= TouchOnFingerMove;

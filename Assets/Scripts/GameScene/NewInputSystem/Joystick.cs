@@ -10,4 +10,8 @@ public class Joystick : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
     }
+    public void InitializeJoystick()
+    {
+        rectTransform = GetComponent<RectTransform>();
+    }
 }

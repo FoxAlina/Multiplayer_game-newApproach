@@ -97,8 +97,6 @@ GameObject:
   - component: {fileID: 3883664019920735832}
   - component: {fileID: 3883664019920735837}
   - component: {fileID: 3883664019920735834}
-  - component: {fileID: 955959728589496148}
-  - component: {fileID: 904959267714152941}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -172,16 +170,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1348e857f90157047a18f4cb0ec2c4b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 0
-  TouchManager: {fileID: 0}
   rotationSpeed: 15
-  speed: 10
-  healthBar: {fileID: 1857708735259885078}
+  speed: 12
   playerZComponent: -15
   bulletPool: {fileID: 3883664019920735834}
+  playerIcon: {fileID: 8925904296633207682}
+  healthBar: {fileID: 1857708735259885078}
   bulletFireRate: 0.15
   scoreAndHealthManager: {fileID: 0}
-  playerIcon: {fileID: 8925904296633207682}
 --- !u!114 &3883664019920735834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,39 +194,6 @@ MonoBehaviour:
   pooledObjects: []
   prefab: {fileID: 2446413503317152215, guid: 12360a8038e7fbb438acebca6ce6a88d, type: 3}
   amountToPool: 20
---- !u!114 &955959728589496148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3883664019920735838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
---- !u!114 &904959267714152941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3883664019920735838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96f504821636428408f3e029770fc60d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _serverAuth: 0
 --- !u!1 &4005815224236624334
 GameObject:
   m_ObjectHideFlags: 0

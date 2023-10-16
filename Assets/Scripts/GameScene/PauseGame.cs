@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using Unity.Netcode;
 
-public class PauseGame : NetworkBehaviour
+public class PauseGame : MonoBehaviour
 {
     public GameObject pausePanel;
 
@@ -15,7 +14,7 @@ public class PauseGame : NetworkBehaviour
 
     public void pauseGame()
     {
-        if (IsOwner)
+        //if (IsOwner)
         {
 
             pausePanel.SetActive(true);
@@ -25,7 +24,7 @@ public class PauseGame : NetworkBehaviour
             Player[] players = FindObjectsOfType<Player>();
             foreach (var player in players)
             {
-                if (player.IsOwner)
+                //if (player.IsOwner)
                 {
                     playerId = player.playerId;
                     //playerGO = player.gameObject;
@@ -34,55 +33,55 @@ public class PauseGame : NetworkBehaviour
 
             }
 
-            hidePlayerServerRpc();
+            //hidePlayerServerRpc();
 
         }
     }
 
-    [ServerRpc]
-    void hidePlayerServerRpc()
-    {
-        hidePlayerClientRpc();
-    }
+    //[ServerRpc]
+    //void hidePlayerServerRpc()
+    //{
+    //    hidePlayerClientRpc();
+    //}
 
-    [ClientRpc]
-    void hidePlayerClientRpc()
-    {
-        Player[] players = FindObjectsOfType<Player>();
-        foreach (var player in players)
-        {
-            if (player.playerId == playerId)
-            {
-                playerGO = player.gameObject;
-                break;
-            }
-        }
-        Debug.Log(playerId);
-        playerGO.SetActive(false);
-    }
+    //[ClientRpc]
+    //void hidePlayerClientRpc()
+    //{
+    //    Player[] players = FindObjectsOfType<Player>();
+    //    foreach (var player in players)
+    //    {
+    //        if (player.playerId == playerId)
+    //        {
+    //            playerGO = player.gameObject;
+    //            break;
+    //        }
+    //    }
+    //    Debug.Log(playerId);
+    //    playerGO.SetActive(false);
+    //}
 
     public void resumeGame()
     {
-        if (IsOwner)
+        //if (IsOwner)
         {
 
             pausePanel.SetActive(false);
             Time.timeScale = 1.0f;
 
-            dispkayPlayerServerRpc();
+            //dispkayPlayerServerRpc();
 
         }
     }
 
-    [ServerRpc]
-    void dispkayPlayerServerRpc()
-    {
-        dispkayPlayerClientRpc();
-    }
+    //[ServerRpc]
+    //void dispkayPlayerServerRpc()
+    //{
+    //    dispkayPlayerClientRpc();
+    //}
 
-    [ClientRpc]
-    void dispkayPlayerClientRpc()
-    {
-        playerGO.SetActive(true);
-    }
+    //[ClientRpc]
+    //void dispkayPlayerClientRpc()
+    //{
+    //    playerGO.SetActive(true);
+    //}
 }

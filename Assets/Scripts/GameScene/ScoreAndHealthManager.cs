@@ -63,7 +63,7 @@ public class ScoreAndHealthManager : MonoBehaviour
                 Player mainPlayer = players[0];
                 foreach (var player in players)
                 {
-                    if (player.IsOwner) { mainPlayer = player; break; }
+                    /*if (player.IsOwner)*/ { mainPlayer = player; break; }
                 }
                 mainPlayer.IsGameOver = true;
 

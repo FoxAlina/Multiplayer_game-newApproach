@@ -1,9 +1,8 @@
-using Unity.Netcode;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoinManager : NetworkBehaviour
+public class CoinManager : MonoBehaviour
 {
     public List<GameObject> coins;
     [SerializeField] private GameObject coinPrefab;
@@ -17,12 +16,12 @@ public class CoinManager : NetworkBehaviour
     bool reload = true;
 
 
-    public override void OnNetworkSpawn()
+    void Awake()
     {
-        if (!IsServer)
-        {
-            enabled = false;
-        }
+        //if (!IsServer)
+        //{
+        //    enabled = false;
+        //}
 
         coins = new List<GameObject>();
         GameObject tmp;
@@ -36,7 +35,7 @@ public class CoinManager : NetworkBehaviour
 
     private void Update()
     {
-        if (Player.IsRunGame && IsServer)
+        if (Player.IsRunGame /*&& IsServer*/)
             if (ActiveCoinsAmount() < numberOfCoins / 2)
             {
                 if (reload) StartReloadCoroutine();
@@ -74,7 +73,7 @@ public class CoinManager : NetworkBehaviour
     {
         yield return new WaitForSeconds(coinSpawnRate);
 
-        if (IsServer)
+        //if (IsServer)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -89,7 +88,7 @@ public class CoinManager : NetworkBehaviour
         reload = true;
     }
 
-    [ClientRpc]
+    //[ClientRpc]
     void setActiveCoinClientRpc(float x, float y)
     {
         GameObject tmp = GetCoin();
