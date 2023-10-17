@@ -18,12 +18,6 @@ public class BeforeGameManager : MonoBehaviour
         joinCodeText.text = GameCodeHolder.gameCode;
     }
 
-    void Update()
-    {
-        
-
-    }
-
     public void StartGame()
     {
         switch (GameCodeHolder.playerType)
@@ -41,5 +35,6 @@ public class BeforeGameManager : MonoBehaviour
     {
         beforeGameMenu.SetActive(false);
         Player.IsRunGame = true;
+        NetworkPlayer.IsRunGame = true;
     }
 }

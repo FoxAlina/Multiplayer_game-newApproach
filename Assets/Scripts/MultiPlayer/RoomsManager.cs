@@ -34,6 +34,6 @@ public class RoomsManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("SampleScene");
+        PhotonNetwork.LoadLevel("GameScene");
     }
 }
