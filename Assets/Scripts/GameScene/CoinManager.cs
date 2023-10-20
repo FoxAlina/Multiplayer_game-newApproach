@@ -35,7 +35,7 @@ public class CoinManager : MonoBehaviour
 
     private void Update()
     {
-        if (Player.IsRunGame)
+        if (NetworkPlayer.IsRunGame)
             if (ActiveCoinsAmount() < numberOfCoins / 2)
             {
                 if (reload) StartReloadCoroutine();
@@ -78,7 +78,6 @@ public class CoinManager : MonoBehaviour
             float y = Random.Range(-verticalRadius, verticalRadius);
             float x = Random.Range(-horizontalRadius, horizontalRadius);
 
-            //setActiveCoinClientRpc(x, y);
             GetComponent<PhotonView>().RPC("setActiveCoinClientRpc", RpcTarget.All, x, y);
         }
         reload = true;

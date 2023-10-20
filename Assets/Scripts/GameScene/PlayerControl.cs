@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 20f;
     [SerializeField] private float speed = 10f;
@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
         scoreAndHealthManager = FindObjectOfType<ScoreAndHealthManager>();
 
         //playerId = (int)NetworkObjectId;
-        Player[] players = FindObjectsOfType<Player>();
+        PlayerControl[] players = FindObjectsOfType<PlayerControl>();
         playerId = players.Length - 1;
 
         playerIcon.sprite = FindObjectOfType<PlayerIconsList>().GetIcon(playerId);

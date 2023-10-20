@@ -27,10 +27,10 @@ public class Bullet : MonoBehaviour
 
         if (collision.tag == "Player" && gameObject.tag == "PlayerBullet")
         {
-            Debug.Log(collision.GetComponent<Player>().playerId + " " + playerId);
-            if (collision.GetComponent<Player>().playerId != playerId)
+            if (collision.GetComponent<NetworkPlayer>().playerId != playerId)
             {
-                collision.GetComponent<Player>().BulletHit();
+                if (collision.GetComponent<NetworkPlayer>().photonView.IsMine)
+                    collision.GetComponent<NetworkPlayer>().photonView.RPC("BulletHit", Photon.Pun.RpcTarget.All);
                 gameObject.SetActive(false);
             }
         }

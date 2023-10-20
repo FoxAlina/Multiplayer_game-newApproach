@@ -1,11 +1,13 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class EndGameManager : MonoBehaviour
 {
     [SerializeField] ScoreAndHealthManager scoreAndHealthManager;
 
-    private int clientsNumber = 0;
-    private bool gameover = false;
+    public int clientsNumber = 0;
+
+    PhotonView photonView;
 
     [Header("UI")]
     [SerializeField] private GameObject gameOverPanel;
@@ -16,29 +18,20 @@ public class EndGameManager : MonoBehaviour
     {
         HideAll();
 
-        Player.IsRunGame = false;
-    }
+        NetworkPlayer.IsRunGame = false;
 
-    void Update()
-    {
-        if (Player.IsRunGame && !gameover)
-        {
-            Player[] players = FindObjectsOfType<Player>();
-            clientsNumber = players.Length;
-            //if (clientsNumber == 1)
-            //{
-            //    ShowWin();
-            //    Player.IsRunGame = false;
-            //}
-        }
+        photonView = GetComponent<PhotonView>();
     }
 
     #region UI
+
     void ShowWin()
     {
         scoreAndHealthManager.ShowFinishScore();
         gameOverPanel.SetActive(true);
         winText.SetActive(true);
+
+        NetworkPlayer.IsRunGame = false;
     }
 
     void ShowGameOver()
@@ -56,32 +49,46 @@ public class EndGameManager : MonoBehaviour
     #endregion
 
     #region End game for player
-    public void PlayerGameOver(int playerId)
+    public void PlayerGameOver(NetworkPlayer player)
     {
+        player.IsGameOver = true;
+
         ShowGameOver();
 
-        SetFalsePlayerServerRpc(playerId);
-
-        gameover = true;
+        photonView.RPC("GameOverForThisPlayerClientRpc", RpcTarget.All, player.playerId);
     }
 
-    //[ServerRpc(RequireOwnership = false)]
-    void SetFalsePlayerServerRpc(int playerId)
+    [PunRPC]
+    void GameOverForThisPlayerClientRpc(int playerId)
     {
-        SetFalsePlayerClientRpc(playerId);
-    }
-
-    //[ClientRpc]
-    void SetFalsePlayerClientRpc(int playerId)
-    {
-        Player[] players = FindObjectsOfType<Player>();
-        Player gameOverPlayer = players[0];
+        NetworkPlayer[] players = FindObjectsOfType<NetworkPlayer>();
         foreach (var player in players)
         {
             if (player.playerId == playerId)
-                gameOverPlayer = player;
+            {
+                player.gameObject.SetActive(false);
+                clientsNumber--;
+                break;
+            }
         }
-        gameOverPlayer.gameObject.SetActive(false);
+
+        CheckNumberOfPlayers();
+    }
+
+    void CheckNumberOfPlayers()
+    {
+        NetworkPlayer[] players = FindObjectsOfType<NetworkPlayer>();
+        if (clientsNumber == 1)
+        {
+            foreach (var playerIter in players)
+            {
+                if (playerIter.photonView.IsMine)
+                {
+                    ShowWin();
+                    break;
+                }
+            }
+        }
     }
     #endregion
 
@@ -91,7 +98,7 @@ public class EndGameManager : MonoBehaviour
         //Disconnect();
         //Cleanup();
 
-        LoadScene.StartScene("MainScene");
+        //LoadScene.StartScene("MainScene");
     }
 
     //void Disconnect()

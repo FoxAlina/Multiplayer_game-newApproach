@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class NetworkPlayer : MonoBehaviour
 {
@@ -14,8 +15,10 @@ public class NetworkPlayer : MonoBehaviour
     public float bulletFireRate = 0.25f;
     float timeCount = 0f;
     float shootTime = 0f;
+    int iconIndex = -1;
 
-    PhotonView photonView;
+
+    public PhotonView photonView;
 
     [HideInInspector] public ScoreAndHealthManager scoreAndHealthManager;
 
@@ -30,19 +33,52 @@ public class NetworkPlayer : MonoBehaviour
         photonView = GetComponent<PhotonView>();
         if (!photonView.IsMine) enabled = false;
 
+        playerId = photonView.ViewID;
+
         scoreAndHealthManager = FindObjectOfType<ScoreAndHealthManager>();
 
-        //playerId = (int)NetworkObjectId;
-        NetworkPlayer[] players = FindObjectsOfType<NetworkPlayer>();
-        playerId = players.Length - 1;
-
-        playerIcon.sprite = FindObjectOfType<PlayerIconsList>().GetIcon(playerId);
-
-        FindObjectOfType<PlayerIconHolder>().SetPlayerIcon(playerIcon.sprite);
+        IsRunGame = true;
 
         healthBar.maxValue = scoreAndHealthManager.maxHealth;
         healthBar.value = scoreAndHealthManager.maxHealth;
+
+        FindObjectOfType<EndGameManager>().clientsNumber++;
     }
+
+    [PunRPC]
+    public void SetPlayerIcon()
+    {
+        if (photonView.IsMine)
+        {
+            SetPlayerIcon((int)PhotonNetwork.LocalPlayer.CustomProperties["playerAvatar"]);
+        }
+        else
+        {
+            Player player = photonView.Owner;
+
+            SetPlayerIcon((int)player.CustomProperties["playerAvatar"]);
+        }
+    }
+
+    public void SetPlayerIcon(int index)
+    {
+        PlayerIconsList iconListScript = FindObjectOfType<PlayerIconsList>();
+        iconIndex = index;
+        playerIcon.sprite = iconListScript.GetIcon(iconIndex);
+
+        if (photonView.IsMine)
+        {
+            FindObjectOfType<PlayerIconHolder>().SetPlayerIcon(playerIcon.sprite);
+        }
+    }
+
+    //public void SetPlayerIcon()
+    //{
+    //    PlayerIconsList iconListScript = FindObjectOfType<PlayerIconsList>();
+    //    iconIndex = iconListScript.GetIconIndex();
+    //    playerIcon.sprite = iconListScript.GetIcon(iconIndex);
+    //    FindObjectOfType<PlayerIconHolder>().SetPlayerIcon(playerIcon.sprite);
+    //}
 
     private void OnEnable()
     {
@@ -67,16 +103,10 @@ public class NetworkPlayer : MonoBehaviour
         {
             MovePlayer();
         }
-        if (IsGameOver)
-        //if (!IsOwner)
-        {
-            gameObject.SetActive(false);
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (IsOwner)
         if (collision.collider.tag == "Coin")
         {
             scoreAndHealthManager.CollectCoin();
@@ -121,18 +151,24 @@ public class NetworkPlayer : MonoBehaviour
     }
 
     #region GetDamage
+
+    [PunRPC]
     public void BulletHit()
     {
-        //if (IsOwner)
+        if (photonView.IsMine)
         {
             scoreAndHealthManager.GetDamage();
             healthBar.value = scoreAndHealthManager.health;
+
+            photonView.RPC("ShowHealthAnotherPlayers", RpcTarget.All, scoreAndHealthManager.health);
         }
     }
 
-    public void ShowHealth()
+    [PunRPC]
+    public void ShowHealthAnotherPlayers(int health)
     {
-        healthBar.value = Health;
+        if (!photonView.IsMine)
+            healthBar.value = health;
     }
     #endregion
 
@@ -146,24 +182,20 @@ public class NetworkPlayer : MonoBehaviour
             {
                 shootTime = timeCount + bulletFireRate;
 
-                //RequestFireServerRpc(transform.position, transform.rotation.eulerAngles);
+                //FireClientRpc(transform.position, transform.rotation.eulerAngles);
 
-                ExecuteShoot(transform.position, transform.rotation.eulerAngles);
+                photonView.RPC("FireClientRpc", RpcTarget.All, transform.position, transform.rotation.eulerAngles);
+
+                //ExecuteShoot(transform.position, transform.rotation.eulerAngles);
             }
         }
     }
 
-    //[ServerRpc]
-    //private void RequestFireServerRpc(Vector3 pos, Vector3 rot)
-    //{
-    //    FireClientRpc(pos, rot);
-    //}
-
-    //[ClientRpc]
-    //private void FireClientRpc(Vector3 pos, Vector3 rot)
-    //{
-    //    if (!IsOwner) ExecuteShoot(pos, rot);
-    //}
+    [PunRPC]
+    private void FireClientRpc(Vector3 pos, Vector3 rot)
+    {
+        ExecuteShoot(pos, rot);
+    }
 
     private void ExecuteShoot(Vector3 pos, Vector3 rot)
     {

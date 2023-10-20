@@ -171,6 +171,7 @@ MonoBehaviour:
   playerIcon: {fileID: 8946124078657784625}
   healthBar: {fileID: 2179674708906999461}
   bulletFireRate: 0.15
+  photonView: {fileID: 0}
   scoreAndHealthManager: {fileID: 0}
 --- !u!114 &3611219500232642281
 MonoBehaviour:
@@ -317,7 +318,7 @@ SpriteRenderer:
   m_SortingLayerID: -1427990489
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1145160808, guid: 6a323a6a578b3d540b455c6e3966026f, type: 3}
+  m_Sprite: {fileID: -407490373, guid: 6a323a6a578b3d540b455c6e3966026f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

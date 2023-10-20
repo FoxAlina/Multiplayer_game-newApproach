@@ -1,28 +1,30 @@
+using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerIconsList : MonoBehaviour
 {
     [SerializeField] private List<Sprite> playerIconsList;
-    //public Dictionary<int, int> takenSprites = new Dictionary<int, int>();
+    private List<int> takenSprites = new List<int>();
+    public int availableSpriteItem = 0;
 
-    public Sprite GetIcon(int k)
+    public Sprite GetIcon(int index)
     {
-        return playerIconsList[k];
+        return playerIconsList[index];
     }
 
-    //public Sprite getIcon(int k)
-    //{
-    //    if (!takenSprites.ContainsKey(k))
-    //    {
-    //        int v = 0;
-    //        while (takenSprites.ContainsValue(v))
-    //        {
-    //            v = Random.Range(0, 24);
-    //        }
-    //        takenSprites.Add(k, v);
-    //        return playerIconsList[v];
-    //    }
-    //    return null;
-    //}
+    public int GetIconIndex()
+    {
+        int result = availableSpriteItem;
+        GetComponent<PhotonView>().RPC("SetIconIndexClientRpc", RpcTarget.All);
+        return result;
+    }
+
+    [PunRPC]
+    public void SetIconIndexClientRpc()
+    {
+        takenSprites.Add(availableSpriteItem);
+        availableSpriteItem++;
+    }
 }

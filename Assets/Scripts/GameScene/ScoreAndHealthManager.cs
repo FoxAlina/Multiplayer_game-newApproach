@@ -57,17 +57,15 @@ public class ScoreAndHealthManager : MonoBehaviour
         {
             ShowFinishScore();
 
-            Player[] players = FindObjectsOfType<Player>();
-            if(players.Length != 0)
+            NetworkPlayer[] players = FindObjectsOfType<NetworkPlayer>();
+            if (players.Length != 0)
             {
-                Player mainPlayer = players[0];
+                NetworkPlayer mainPlayer = players[0];
                 foreach (var player in players)
                 {
-                    /*if (player.IsOwner)*/ { mainPlayer = player; break; }
+                    if (player.photonView.IsMine) { mainPlayer = player; break; }
                 }
-                mainPlayer.IsGameOver = true;
-
-                endGameManager.PlayerGameOver(mainPlayer.playerId);
+                endGameManager.PlayerGameOver(mainPlayer);
             }
         }
     }
