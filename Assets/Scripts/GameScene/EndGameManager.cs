@@ -1,7 +1,7 @@
 using Photon.Pun;
 using UnityEngine;
 
-public class EndGameManager : MonoBehaviour
+public class EndGameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] ScoreAndHealthManager scoreAndHealthManager;
 
@@ -21,6 +21,11 @@ public class EndGameManager : MonoBehaviour
         NetworkPlayer.IsRunGame = false;
 
         photonView = GetComponent<PhotonView>();
+    }
+
+    public override void OnLeftRoom()
+    {
+        LoadScene.StartScene("LobbyScene");
     }
 
     #region UI
@@ -95,23 +100,9 @@ public class EndGameManager : MonoBehaviour
     #region Bact to main menu
     public void BactToMainMenu()
     {
-        //Disconnect();
-        //Cleanup();
-
-        //LoadScene.StartScene("MainScene");
+        if (PhotonNetwork.InRoom)
+            PhotonNetwork.LeaveRoom();
     }
 
-    //void Disconnect()
-    //{
-    //    NetworkManager.Singleton.Shutdown();
-    //}
-
-    //void Cleanup()
-    //{
-    //    if (NetworkManager.Singleton != null)
-    //    {
-    //        Destroy(NetworkManager.Singleton.gameObject);
-    //    }
-    //}
     #endregion
 }

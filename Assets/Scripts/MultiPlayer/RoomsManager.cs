@@ -43,7 +43,6 @@ public class RoomsManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.LoadLevel("GameScene");
     }
-
     void SetPlayerIcon()
     {
         int iconIndex = 0;
@@ -63,7 +62,5 @@ public class RoomsManager : MonoBehaviourPunCallbacks
             int index = (int)PhotonNetwork.LocalPlayer.CustomProperties["playerAvatar"];
             Debug.Log(index);
         }
-
-        //PhotonNetwork.LoadLevel("GameScene");
     }
 }

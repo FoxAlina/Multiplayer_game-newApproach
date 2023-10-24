@@ -21,7 +21,7 @@ public class PauseGame : MonoBehaviour
             Time.timeScale = 0.0f;
 
 
-            PlayerControl[] players = FindObjectsOfType<PlayerControl>();
+            SinglePlayer[] players = FindObjectsOfType<SinglePlayer>();
             foreach (var player in players)
             {
                 //if (player.IsOwner)

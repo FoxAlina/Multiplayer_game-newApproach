@@ -72,14 +72,6 @@ public class NetworkPlayer : MonoBehaviour
         }
     }
 
-    //public void SetPlayerIcon()
-    //{
-    //    PlayerIconsList iconListScript = FindObjectOfType<PlayerIconsList>();
-    //    iconIndex = iconListScript.GetIconIndex();
-    //    playerIcon.sprite = iconListScript.GetIcon(iconIndex);
-    //    FindObjectOfType<PlayerIconHolder>().SetPlayerIcon(playerIcon.sprite);
-    //}
-
     private void OnEnable()
     {
         PlayerShooting.OnPlayerFire += Fire;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerControl : MonoBehaviour
+public class SinglePlayer : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 20f;
     [SerializeField] private float speed = 10f;
@@ -26,19 +26,15 @@ public class PlayerControl : MonoBehaviour
     {
         scoreAndHealthManager = FindObjectOfType<ScoreAndHealthManager>();
 
-        //playerId = (int)NetworkObjectId;
-        PlayerControl[] players = FindObjectsOfType<PlayerControl>();
+        SinglePlayer[] players = FindObjectsOfType<SinglePlayer>();
         playerId = players.Length - 1;
 
         playerIcon.sprite = FindObjectOfType<PlayerIconsList>().GetIcon(playerId);
 
-        /*if (IsOwner)*/
         FindObjectOfType<PlayerIconHolder>().SetPlayerIcon(playerIcon.sprite);
 
         healthBar.maxValue = scoreAndHealthManager.maxHealth;
         healthBar.value = scoreAndHealthManager.maxHealth;
-
-        /*if (!IsOwner) enabled = false;*/
     }
 
     private void OnEnable()
@@ -65,7 +61,6 @@ public class PlayerControl : MonoBehaviour
             MovePlayer();
         }
         if (IsGameOver)
-        //if (!IsOwner)
         {
             gameObject.SetActive(false);
         }
@@ -73,7 +68,6 @@ public class PlayerControl : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (IsOwner)
         if (collision.collider.tag == "Coin")
         {
             scoreAndHealthManager.CollectCoin();
@@ -120,11 +114,8 @@ public class PlayerControl : MonoBehaviour
     #region GetDamage
     public void BulletHit()
     {
-        //if (IsOwner)
-        {
-            scoreAndHealthManager.GetDamage();
-            healthBar.value = scoreAndHealthManager.health;
-        }
+        scoreAndHealthManager.GetDamage();
+        healthBar.value = scoreAndHealthManager.health;
     }
 
     public void ShowHealth()
@@ -143,24 +134,10 @@ public class PlayerControl : MonoBehaviour
             {
                 shootTime = timeCount + bulletFireRate;
 
-                //RequestFireServerRpc(transform.position, transform.rotation.eulerAngles);
-
                 ExecuteShoot(transform.position, transform.rotation.eulerAngles);
             }
         }
     }
-
-    //[ServerRpc]
-    //private void RequestFireServerRpc(Vector3 pos, Vector3 rot)
-    //{
-    //    FireClientRpc(pos, rot);
-    //}
-
-    //[ClientRpc]
-    //private void FireClientRpc(Vector3 pos, Vector3 rot)
-    //{
-    //    if (!IsOwner) ExecuteShoot(pos, rot);
-    //}
 
     private void ExecuteShoot(Vector3 pos, Vector3 rot)
     {
@@ -174,6 +151,5 @@ public class PlayerControl : MonoBehaviour
             bullet.SetActive(true);
         }
     }
-
     #endregion
 }

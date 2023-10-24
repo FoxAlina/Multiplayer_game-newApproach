@@ -7,8 +7,6 @@ public class SpawnPlayers : MonoBehaviour
     [SerializeField] GameObject playerPrefab;
     [SerializeField] float leftBorder, rightBorder, topBorder, bottomBorder;
 
-
-    //public void SpawnPlayerPrefab()
     void Start()
     {
         Vector2 randomPosition = new Vector2(Random.Range(leftBorder, rightBorder), Random.Range(topBorder, bottomBorder));
